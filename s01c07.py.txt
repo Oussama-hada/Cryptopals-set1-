@@ -1,0 +1,12 @@
+from base64 import b64decode
+from Crypto.Cipher import AES
+
+key = b"YELLOW SUBMARINE"
+def alpha(x, y):
+    a = AES.new(y, AES.MODE_ECB)
+    return a.decrypt(x)
+with open('set04.txt', 'r') as file:
+    b = file.read()
+c = b64decode(b)
+d = alpha(c, key)
+print(d)
