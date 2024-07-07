@@ -1,0 +1,30 @@
+from langdetect import detect, detect_langs
+
+def is_english(text):
+    try:
+        lang = detect(text)
+        return lang == 'en'
+    except:
+        return False
+
+
+def alpha(x):
+    if isinstance(x, str):
+        x = bytes.fromhex(x)
+    s = [chr(k) for k in range(256)]
+    t = [char for char in s if 32 <= ord(char) <= 126]
+    a = []
+    for j in t:
+        y = j
+        y = y.encode()
+        if len(y) < len(x):
+            y = y * (len(x) // len(y) +1)
+            y = y[:len(x)]
+            a.append(bytes([b1 ^ b2 for b1, b2 in zip(x, y)]))
+    return a
+c = alpha('1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736')
+for k in range(94):
+    q = c[k].decode()
+    if is_english(q):
+        print(q)
+        print(k+32)
