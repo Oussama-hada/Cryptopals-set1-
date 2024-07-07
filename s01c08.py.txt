@@ -1,0 +1,16 @@
+def alpha(x):
+    w = bytes.fromhex(x)
+    b = 16
+    a = [x[i:i+b] for i in range(0, len(x), b)]
+    c = set(a)
+    if len(c) < len(a):
+        return True
+    else:
+        return False
+with open('set04.txt', 'r') as file:
+    i = 0
+    for line in file:
+        line = line.strip()
+        if alpha(line):
+            print(f"it is line number {i} which is {line}")
+        i = i+1
