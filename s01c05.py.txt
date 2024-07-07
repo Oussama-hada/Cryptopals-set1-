@@ -1,0 +1,14 @@
+def alpha(x, y):
+    if isinstance(x, str):
+        x = x.encode()
+    if isinstance(y, str):
+        y = y.encode()
+    if len(y) < len(x):
+        y = y * (len(x) // len(y) +1)
+        y = y[:len(x)]
+    a = bytes([b1 ^ b2 for b1, b2 in zip(x, y)])
+    return a
+z1 = "Burning 'em, if you ain't quick and nimble I go crazy when I hear a cymbal"
+c = "ICE"
+d1 = alpha(z1, c).hex()
+print(d1)
