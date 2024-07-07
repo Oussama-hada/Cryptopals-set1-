@@ -1,0 +1,55 @@
+import re
+
+COMMON_ENGLISH_WORDS = set([
+    'the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'I', 'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you',
+    'do', 'at'
+])
+COMMON_ENGLISH_LETTERS = 'etaoinshrdlu'
+
+
+def is_similar_to_english(text, word_threshold=0.2, letter_threshold=0.7):
+    text = re.sub(r'[^a-zA-Z\s]', '', text.lower())
+
+    words = text.split()
+
+    if not words:
+        return False
+    common_word_count = sum(1 for word in words if word in COMMON_ENGLISH_WORDS)
+    word_score = common_word_count / len(words)
+
+    letter_count = sum(1 for letter in text if letter in COMMON_ENGLISH_LETTERS)
+    letter_score = letter_count / len(text.replace(' ', ''))
+
+    return word_score >= word_threshold or letter_score >= letter_threshold
+
+
+def alpha(x):
+    if isinstance(x, str):
+        x = bytes.fromhex(x)
+    s = [chr(k) for k in range(256)]
+    t = [char for char in s if 32 <= ord(char) <= 126]
+    a = []
+    for j in t:
+        y = j
+        y = y.encode()
+        if len(y) < len(x):
+            y = y * (len(x) // len(y) +1)
+            y = y[:len(x)]
+            a.append(bytes([b1 ^ b2 for b1, b2 in zip(x, y)]))
+    return a
+with open('set04.txt', 'r') as file:
+    i = 0
+    for line in file:
+        i = i+1
+        line = line.strip()
+        c = alpha(str(line))
+        for k in range(94):
+            q = str(c[k])
+            if is_similar_to_english(q):
+                print('this is line number: ', i)
+                print(q)
+                print(k+32)
+
+# it is line 171
+# and the single character is 53 in code ascii which is 5
+# the decrypted msg is "Now that the party is jumping"
